@@ -9,6 +9,7 @@
 #include "db_parser.h"
 #include "product_parser.h"
 #include "util.h"
+#include "mydatastore.h"
 
 using namespace std;
 struct ProdNameSorter {
@@ -29,7 +30,7 @@ int main(int argc, char* argv[])
      * Declare your derived DataStore object here replacing
      *  DataStore type to your derived type
      ****************/
-    DataStore ds;
+    MyDataStore ds;
 
 
 
@@ -99,10 +100,47 @@ int main(int argc, char* argv[])
                 }
                 done = true;
             }
-	    /* Add support for other commands here */
+            else if (cmd == "ADD") {
+                std::string username;
+                std::string to_add;
+                ss >> username >> to_add;
+                ds.addToCart(username, hits[stoi(to_add) - 1]);
+            }
+            else if (cmd == "VIEWCART") {
+                std::string username;
+                ss >> username;
+                ds.viewCart(username);
+            }
+            else if (cmd == "BUYCART") {
+                std::string username;
+                ss >> username;
+                ds.buyCart(username);
+            }
 
-
-
+            #ifdef DEBUG
+            else if (cmd == "products") {
+                for (size_t i = 0; i < ds.getProducts().size(); ++i) {
+                    std::set<std::string> product_key_word_list = (ds.getProducts())[i]->keywords();
+                    cout << (ds.getProducts())[i]->getName() << ": ";
+                    for (std::set<std::string>::iterator j = product_key_word_list.begin(); j != product_key_word_list.end(); ++j) {
+                        cout << *j << " ";
+                    }
+                    cout << endl;
+                }
+            }
+            else if (cmd == "users") {
+                for (size_t i = 0; i < ds.getUsers().size(); ++i) {
+                    cout << (ds.getUsers())[i]->getName() << ": " << (ds.getUsers())[i]->getBalance() << endl;
+                }
+                cout << endl;
+            }
+            else if (cmd == "hits") {
+                for (size_t i = 0; i < hits.size(); ++i) {
+                    cout << i << ": " << hits[i]->getName() << endl;
+                }
+                cout << endl;
+            }
+            #endif
 
             else {
                 cout << "Unknown command" << endl;
