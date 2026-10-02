@@ -3,7 +3,7 @@
 #include <string>
 
 Movie::Movie(const std::string name, double price, int qty, const std::string genre, const std::string rating) :
-    Product("Movie", name, price, qty), 
+    Product("movie", name, price, qty), 
     genre_(genre), 
     rating_(rating) 
 {
@@ -11,8 +11,7 @@ Movie::Movie(const std::string name, double price, int qty, const std::string ge
 }
 
 std::set<std::string> Movie::keywords() const {
-    std::set<std::string> word_set = parseStringToWords(getName());
-    word_set.insert(genre_);
+    std::set<std::string> word_set = parseStringToWords(getName() + " " + genre_);
 
     // set containing keywords in name of the film + the genre
     return word_set;

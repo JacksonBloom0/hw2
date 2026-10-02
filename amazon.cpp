@@ -102,9 +102,15 @@ int main(int argc, char* argv[])
             }
             else if (cmd == "ADD") {
                 std::string username;
-                std::string to_add;
+                size_t to_add;
                 ss >> username >> to_add;
-                ds.addToCart(username, hits[stoi(to_add) - 1]);
+                if (ss.fail() || to_add < 1 || to_add > hits.size() || !ds.findUser(username)) {
+                  std::cout << "Invalid request" << std::endl;
+                  ss.clear();
+                }
+                else {
+                  ds.addToCart(username, hits[to_add - 1]);
+                }
             }
             else if (cmd == "VIEWCART") {
                 std::string username;

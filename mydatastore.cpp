@@ -56,6 +56,15 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
         return results;
     }
 }
+User* MyDataStore::findUser(const std::string& username) const {
+  for (size_t i = 0; i < users_.size(); ++i) {
+      if (convToLower(users_[i]->getName()) == convToLower(username)) {
+          return users_[i];
+      }
+  }
+  return nullptr;
+}
+
 
 void MyDataStore::dump(std::ostream& ofile) {
     ofile << "<products>" << std::endl;
@@ -78,7 +87,7 @@ void MyDataStore::addToCart(const std::string& username, Product* product) {
     }
     User* user = findUser(username);
     userCarts_[user].push(product);
-    std::cout << "Added " << product->getName() << " to " << user->getName() << "'s cart." << std::endl;
+    // std::cout << "Added " << product->getName() << " to " << user->getName() << "'s cart." << std::endl;
 }
 
 
@@ -89,18 +98,15 @@ void MyDataStore::viewCart(const std::string& username)  {
         return;
     }
     User* user = findUser(username);
-    if (userCarts_[user].empty()) {
-        std::cout << "Your cart is empty." << std::endl;
-        return;
-    }
     std::queue<Product*> cart = userCarts_[user];
     int itemNumber = 1;
 
     while (!cart.empty()) {
-        std::cout << itemNumber << ". " << cart.front()->displayString() << std::endl;
+        std::cout << "Item " << itemNumber << std::endl;
+        std::cout << cart.front()->displayString() << std::endl << std::endl;
         cart.pop();
         itemNumber++;
-    }
+  }
 }
 
 void MyDataStore::buyCart(const std::string& username) {
@@ -122,7 +128,7 @@ void MyDataStore::buyCart(const std::string& username) {
             user->deductAmount(item_cost);
             item->subtractQty(1);
             // std::cout << "Purchased " << item->getName() << " for " << std::to_string(item_cost) << std::endl;
-            std::cout << item->displayString() << std::endl << std::endl;
+            // std::cout << item->displayString() << std::endl << std::endl;
         }
         else {
             // std::cout << "Could not purchase " << item->getName() << std::endl;

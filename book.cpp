@@ -4,7 +4,7 @@
 #include <set>
 
 Book::Book(const std::string name, double price, int qty, const std::string author, const std::string isbn) :
-    Product("Book", name, price, qty), 
+    Product("book", name, price, qty), 
     author_(author), 
     isbn_(isbn) 
 {

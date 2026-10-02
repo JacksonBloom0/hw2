@@ -17,14 +17,8 @@ class MyDataStore : public DataStore {
         std::vector<Product*> getProducts() const { return products_; }
         std::vector<User*> getUsers() const { return users_; }
 
-        User* findUser(const std::string& username) const {
-            for (size_t i = 0; i < users_.size(); ++i) {
-                if (users_[i]->getName() == username) {
-                    return users_[i];
-                }
-            }
-            return nullptr;
-        }
+        User* findUser(const std::string& username) const;
+        
         void addToCart(const std::string& username, Product* product);
 
 

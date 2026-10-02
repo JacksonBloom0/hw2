@@ -3,7 +3,7 @@
 #include <string>
 
 Clothing::Clothing(const std::string name, double price, int qty, std::string size, std::string brand) :
-    Product("Clothing", name, price, qty), 
+    Product("clothing", name, price, qty), 
     size_(size), 
     brand_(brand) 
 {
